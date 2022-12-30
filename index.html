@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Einkaufsliste</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script>
+    // Funktion, um Einkaufsliste-Einträge aus der PHP-Datei abzurufen
+    function loadShoppingList() {
+      $.ajax({
+        url: "get_shopping_list.php", // URL zur PHP-Datei, die die Einkaufsliste abruft
+        type: "GET", // HTTP-Methode (z.B. GET oder POST)
+        dataType: "json", // Erwarteter Datentyp der Antwort
+        success: function(data) { // Funktion ausführen, wenn der Request erfolgreich war
+          // Schleife durch Einkaufsliste-Einträge
+          for (var i = 0; i < data.length; i++) {
+            // Neues li-Element erstellen und Eintrag hinzufügen
+            var item = $("<li>" + data[i] + "</li>");
+            // Knopf zum Löschen des Eintrags hinzufügen
+            var deleteButton = $("<button>Löschen</button>");
+            deleteButton.click(function() {
+              // Eintrag löschen, wenn Knopf geklickt wurde
+              $(this).parent().remove();
+            });
+            item.append(deleteButton);
+            // Li-Element der Einkaufsliste hinzufügen
+            $("ul").append(item);
+          }
+        },
+        error: function() { // Funktion ausführen, wenn der Request fehlgeschlagen ist
+          alert("Es gab einen Fehler beim Abrufen der Einkaufsliste.");
+        }
+      });
+    }
+  
+    // Einkaufsliste beim Laden der Seite laden
+    $(document).ready(function() {
+      loadShoppingList();
+    });
+  </script>
+</head>
+<body>
+  <h1>Einkaufsliste</h1>
+  <ul>
+    <!-- Einkaufsliste-Einträge werden hier hinzugefügt -->
+  </ul>
+</body>
+</html>
